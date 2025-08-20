@@ -52,6 +52,12 @@ function formatError(
                 return `Expected value for key '${key}' to be one of ${expectedValues}; got '${value}'`;
             }
 
-            return `Expected value for key '${key}' of type ${config.type.name}; got '${value}'`;
+            if (typeof config.type === 'object' && 'kind' in config.type && config.type.kind === 'duration') {
+                return `Expected value for key '${key}' of type duration (${config.type.unit}); got '${value}'`;
+            }
+            if (typeof config.type === 'function' && 'name' in config.type) {
+                return `Expected value for key '${key}' of type ${config.type.name}; got '${value}'`;
+            }
+            return `Expected value for key '${key}' of unknown type; got '${value}'`;
     }
 }
